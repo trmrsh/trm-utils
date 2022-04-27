@@ -7,8 +7,8 @@ way to define named parameters, defaults and ranges, and allows
 parameters to be hidden by default if need be.
 
 Example code, in which three parameters are prompted for ('device',
-'npoint', 'output'). The values input by the user will be stored in
-a file located in a directory pointed to by environment variable
+'npoint', 'output'). The values input by the user will be stored in a
+file located in a directory pointed to by environment variable
 'COMM_EG_ENV', or, if that is undefined, in a sub-directory of the
 home directory called '.comm_eg'. ::
 
@@ -36,8 +36,8 @@ home directory called '.comm_eg'. ::
   >>
   >> # rest of program follows ...
 
-If this is invoked in a script called 'script.py' then the following are
-all ways to invoke it:
+If this is invoked in a script called 'script.py' then the following
+are all ways to invoke it:
 
 script.py<cr>
 script.py device=/ps npoint=20<cr>
@@ -59,8 +59,9 @@ They are::
   prompt : forces prompting for all variables not supplied via the argument
       list passed on creation of Cline objects.
 
-When you get prompting, <tab> allows you to complete filenames. Entering '?'
-gives the parameter range if any has been supplied.
+When you get prompting, <tab> allows you to complete
+filenames. Entering '?'  gives the parameter range if any has been
+supplied.
 
 When 'npoint' was prompted above, a default value [1], and a minimum
 and maximum [1 and 10] were supplied. If npoint is not given on the
@@ -72,8 +73,8 @@ If '25' was entered, then next time round, you would get
 
   npoint - number of points [25]: <user input here>
 
-Hitting <CR> as the input would retain the '25', hence the
-script "remembers" old values, saving a lot of typing.
+Hitting <CR> as the input would retain the '25', hence the script
+"remembers" old values, saving a lot of typing.
 
 """
 
