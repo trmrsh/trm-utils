@@ -65,8 +65,6 @@ def centroid(xpos, fwhm, y, emission, e=None, nmax=None):
         raise ValueError('length of y array < 3')
     if fwhm < 2:
         raise ValueError(f'fwhm = {fwhm} < 2')
-    if xpos < 1.0 or xpos > len(y)-2:
-        raise ValueError(f'xpos = {xpos} is out of allowed range 1 to {len(y)-2}')
     if e is not None and len(e) != len(y):
         raise ValueError('length of e array does not match the y array')
     if nmax is not None and nmax < 1:
@@ -103,6 +101,9 @@ def centroid(xpos, fwhm, y, emission, e=None, nmax=None):
 
     vals = []
     for xp in xpos:
+        if xp < 1.0 or xp > len(y)-2:
+            raise ValueError(f'xpos = {xp} is out of range 1 to {len(y)-2}')
+
         if nmax is None:
             # full array
              n1, n2 = 0, len(y)
