@@ -172,7 +172,9 @@ def centroid(xpos, fwhm, y, emission, e=None, nmax=None):
             continue
 
         if not found_switch:
-            raise ValueError(f'could not find peak within 3*fwhm of initial position xpos = {xp}')
+            raise ValueError(
+                f'could not find peak within 3*fwhm of initial position xpos = {xp}'
+            )
 
         # reorder if necessary
         if x1 > x2:
@@ -180,9 +182,11 @@ def centroid(xpos, fwhm, y, emission, e=None, nmax=None):
             dc1,dc2 = dc2,dc1
 
         if x1 < n1 or x2 < n1+1 or x1 > n2-2 or x2 > n2-1:
-            raise ValueError(f'bracketting limits = {x1},{x2} out of ranges {n1}--{n2-2}, {n1+1}--{n2-1}.')
+            raise ValueError(
+                f'bracketting limits = {x1},{x2} out of ranges {n1}--{n2-2}, {n1+1}--{n2-1}.'
+            )
 
-            # now find root using Brent's method
+        # now find root using Brent's method
         xm,r = brentq(bfunc, x1, x2, args=(xsub,ysub,sigma), full_output=True)
         if not r.converged:
             raise ValueError('brentq failed to converge')
