@@ -1,5 +1,3 @@
-# Licensed under a 3-clause BSD style license - see LICENSE.rst
-
 """command line parameter storage and prompting for scripts.
 
 It can be useful to have scripts that remember their parameters from
@@ -8,22 +6,30 @@ storage and retrieval of parameter values in disk files. It provides a
 way to define named parameters, defaults and ranges, and allows
 parameters to be hidden by default if need be.
 
-Example code, in which three para::
+Example code, in which three parameters are prompted for ('device',
+'npoint', 'output'). The values input by the user will be stored in
+a file located in a directory pointed to by environment variable
+'COMM_EG_ENV', or, if that is undefined, in a sub-directory of the
+home directory called '.comm_eg'. ::
 
   >> import sys
-  >> from trm.cline import Cline
+  >> from trm.utils import cline
   >>
-  >> # get command name
-  >> comm = sys.argv.pop(0) 
+  >> # get command name 
+  >> command, args = cline.script_args()
   >>
-  >> with Cline('COMM_ENV', '.comm', comm, sys.argv) as cl:
+  >> # invoking as a context manager ensures that even if
+  >> # the script is interrupted, the parameter values are
+  >> # saved to disk
+  >>
+  >> with cline.Cline('COMM_EG_ENV', '.comm_eg', commad, args) as cl:
   >>
   >>   # register parameters
   >>   cl.register('device', Cline.GLOBAL, Cline.HIDE)
   >>   cl.register('npoint', Cline.LOCAL, Cline.PROMPT)
   >>   cl.register('output', Cline.LOCAL, Cline.PROMPT)
   >>
-  >>   # get inputs
+  >>   # get their values
   >>   device = cl.get_value('device', 'plot device', '/xs')
   >>   npoint = cl.get_value('npoint', 'number of points', 10, 1, 100)
   >>   output = cl.get_value('output', 'output file', 'save.dat')
@@ -55,6 +61,19 @@ They are::
 
 When you get prompting, <tab> allows you to complete filenames. Entering '?'
 gives the parameter range if any has been supplied.
+
+When 'npoint' was prompted above, a default value [1], and a minimum
+and maximum [1 and 10] were supplied. If npoint is not given on the
+command line, then it would be prompted in the form:
+
+  npoint - number of points [10]: <user input here>
+
+If '25' was entered, then next time round, you would get 
+
+  npoint - number of points [25]: <user input here>
+
+Hitting <CR> as the input would retain the '25', hence the
+script "remembers" old values, saving a lot of typing.
 
 """
 
@@ -107,7 +126,7 @@ def clist(command):
     cl = re.findall('"[^"]*"|\S+', command)
     return [c.lstrip('"').rstrip('"') for c in cl]
 
-def script_args(args):
+def script_args(args=None):
     """This is a small helper method to use at the start of an entry
     point script.
 
