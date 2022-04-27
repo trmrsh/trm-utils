@@ -1,15 +1,14 @@
-def style_mpl_axes(axes):
-    """
-    I don't like the default matplotlib axes as I prefer to
-    have ticks marks going into the axes and for all 4 axes to
-    have them (PGPLOT style). This routine applies fixes to accomplish
-    this.
+"""package of generally useful classes and functions.
 
-    Arguments::
+This package collects classes and functions that I regularly use but
+have no clear home, and which are not enough on their own to justify
+making separate packages for. Amongst other things, they include a
+class for handling 3D vectors, and for dealing with command-line
+arguments in a way that gives scripts a "memory" (cline).
 
-      axes : :class:`~matplotlib.axes.Axes`
-         the Axes object which will be updated.
-    """
-    axes.tick_params(axis="x", direction="in")
-    axes.tick_params(axis="y", direction="in")
-    axes.tick_params(bottom=True, top=True, left=True, right=True)
+"""
+
+# import all objects from core into top-level namespace
+from .core import *
+
+__all__ = core.__all__
