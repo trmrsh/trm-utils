@@ -22,7 +22,7 @@ setup(
     url='http://www.astro.warwick.ac.uk/',
 
     # Choose your license
-    license='BSD',
+    license='MIT',
 
     classifiers=[
         # How mature is this project? Common values are
@@ -36,7 +36,7 @@ setup(
         #'Topic :: Astronomy :: Photometric reduction',
 
         # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
@@ -44,9 +44,9 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    install_requires=['astropy','matplotlib','numpy'],
+    install_requires=['astropy','matplotlib','numpy','scipy'],
 
-    # Makes significant use of f-strings which came in python v3.6
+    # Makes significant use of f-strings which only came in python v3.6
     python_requires='>=3.6',
 
   )
