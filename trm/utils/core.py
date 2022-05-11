@@ -218,7 +218,8 @@ def splfit(x, y, ye, nspline, thresh, slow=True):
          the Y values
 
        ye : array
-         uncertainties in Y, used to weight fit. Must be > 0.
+         uncertainties in Y, used to weight fit. Any points with
+         ye <= 0 are ignored.
 
        nspline : int
          the number of splines
