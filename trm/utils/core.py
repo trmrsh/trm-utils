@@ -7,7 +7,10 @@ import numpy as np
 from scipy import interpolate
 from scipy.optimize import brentq
 
-__all__ = ('centroid', 'splfit', 'style_mpl_axes')
+__all__ = (
+    'centroid', 'splfit', 'style_mpl_axes',
+    'timcorr'
+)
 
 def centroid(xpos, fwhm, y, emission, e=None, nmax=None):
     """computes weighted centroid(s) of a feature(s) in a 1D array.
@@ -253,9 +256,6 @@ def splfit(x, y, ye, nspline, thresh, slow=True):
 
     """
 
-    if ye.min() <= 0.:
-        raise SubsError('Y errors have at least one value <= 0')
-
     ok   = ye > 0.
     nrej = 1
 
@@ -275,7 +275,7 @@ def splfit(x, y, ye, nspline, thresh, slow=True):
         sfit = interpolate.splev(x, sp)
 
         resid = np.abs((y - sfit)/ye)
-        rms   = np.sqrt((resid[ok]**2).sum()/(len(yg)-nspline))
+        rms = np.sqrt((resid[ok]**2).sum()/(len(yg)-nspline))
 
         if slow:
             worst = resid[ok].max()
@@ -307,3 +307,84 @@ def style_mpl_axes(axes):
     axes.tick_params(axis="x", direction="in")
     axes.tick_params(axis="y", direction="in")
     axes.tick_params(bottom=True, top=True, left=True, right=True)
+
+def timcorr(ts, position, telescope, intime="MJD(UTC)", outime="BMJD(TDB)"):
+    """Applies time conversions (e.g. UTC to TDB) and light travel time
+    corrections (e.g. to heliocentre or barycentre) to a set of times.
+
+    Arguments::
+
+        ts : array
+           the times, in days. Multiple different formats
+           accepted. See `intime`.
+
+        position : str | SkyCoord
+          RA/Dec string (sexagesimal form e.g. 20:23:04,5
+          -00:02:56.3") suitable for creating an
+          astropy.coordinates.SkyCoord object, or a pre-built SkyCoord
+
+        telescope : str | EarthLocation
+          string recognised for creating an
+          astropy.coordinates.EarthLocation object, or a pre-built
+          EarthLocation. Examples: 'lapalma', 'paranal'.
+
+        intime : str
+          type of input time. Possibilities::
+
+            JD(UTC) : Julian Day, UTC time.
+            MJD(UTC) : Modified Julian Day, UTC time.
+
+        outime : str
+          type of time returned. Possibilities::
+
+            BMJD(TDB) : Barycentric MJD, TDB time.
+            BJD(TDB) : Barycentric JD, TDB time.
+
+    """
+    INTIMES = ('JD(UTC)', 'MJD(UTC)',)
+    if intime not in INTIMES:
+        raise ValueError(
+            f'intime = {intime} not recognised.\n'
+            'Possible values = {INTIMES}'
+        )
+    OUTIMES = ('BMJD(TDB)','BJD(TDB)',)
+    if outime not in OUTIMES:
+        raise ValueError(
+            f'outime = {outime} not recognised.\n'
+            'Possible values = {OUTIMES}'
+        )
+
+    if not isinstance(position, SkyCoord):
+        position = SkyCoord(position, unit=(u.hourangle, u.deg))
+
+    if not isinstance(telescope, EarthLocation):
+        telescope = EarthLocation.of_site(telescope)
+        
+    if intime == 'JD(UTC)' or intime == 'HJD(UTC)':
+        times = Time(ts, format='jd', scale='utc', location=telescope)
+    elif intime == 'MJD(UTC)' or intime == 'HMJD(UTC)':
+        times = Time(ts, format='mjd', scale='utc', location=telescope)
+
+    if intime.startswith('H'):
+        # heliocentric correction: subtract to get UTC times
+        ltt_helio = times.light_travel_time(
+            position, kind='heliocentric'
+        )
+        times = times - ltt_helio
+
+    if outime == 'BMJD(TDB)':
+        # Barycentric correction: add to get to barycentre
+        ltt_bary = times.light_travel_time(
+            position, kind='barycentric'
+        )
+        times = (times.tdb + ltt_bary).mjd
+        
+    elif outime == 'BJD(TDB)':
+        # Barycentric correction: add to get to barycentre
+        ltt_bary = times.light_travel_time(
+            position, kind='barycentric'
+        )
+        times = (times.tdb + ltt_bary).jd
+
+    return times
+
