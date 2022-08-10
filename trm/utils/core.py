@@ -7,6 +7,10 @@ import numpy as np
 from scipy import interpolate
 from scipy.optimize import brentq
 
+from astropy.time import Time
+from astropy.coordinates import SkyCoord, EarthLocation
+import astropy.units as u
+
 __all__ = (
     'centroid', 'splfit', 'style_mpl_axes',
     'timcorr'
@@ -312,18 +316,19 @@ def timcorr(ts, position, telescope, intime="MJD(UTC)", outime="BMJD(TDB)"):
     """Applies time conversions (e.g. UTC to TDB) and light travel time
     corrections (e.g. to heliocentre or barycentre) to a set of times.
 
+
     Arguments::
 
         ts : array
            the times, in days. Multiple different formats
            accepted. See `intime`.
 
-        position : str | SkyCoord
-          RA/Dec string (sexagesimal form e.g. 20:23:04,5
+        position : str | astropy.coordinates.SkyCoord
+          RA/Dec string (hours/degrees e.g. "20:23:04,5
           -00:02:56.3") suitable for creating an
           astropy.coordinates.SkyCoord object, or a pre-built SkyCoord
 
-        telescope : str | EarthLocation
+        telescope : str | astropy.coordinates.EarthLocation
           string recognised for creating an
           astropy.coordinates.EarthLocation object, or a pre-built
           EarthLocation. Examples: 'lapalma', 'paranal'.
