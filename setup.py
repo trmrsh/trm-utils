@@ -4,8 +4,8 @@ from setuptools import setup
 with open('README.rst') as f:
     readme = f.read()
 
-with open('HISTORY.rst') as f:
-    history = f.read()
+#with open('HISTORY.rst') as f:
+#    history = f.read()
 
 setup(
     name='trm.utils',
@@ -16,7 +16,8 @@ setup(
     author='Tom Marsh',
     author_email='t.r.marsh@warwick.ac.uk',
     description="Allows scripts to remember parameter input values",
-    long_description=readme + '\n\n' + history,
+#    long_description=readme + '\n\n' + history,
+    long_description=readme,
     long_description_content_type='text/xrst',
     url='https://github.com/trmrsh/trmutils',
 
