@@ -12,10 +12,10 @@ of bad data.
 Installation
 ------------
 
-``trm.utils`` makes use of numpy, scipy and astropy, and requires
-Python 3.6+. One routine ``mpl_style_axes`` only makes sense for
-matplotlib plots but if you don't use it, you don't need matplotlib
-to be installed.
+``trm.utils`` makes use of numpy, scipy and astropy (listed in the
+pyproject.tomol files as requirements), and requires Python 3.6+. One
+routine ``mpl_style_axes`` only makes sense for matplotlib plots, but
+if you don't use it, you don't need matplotlib to be installed.
 
 Install ``trm.utils`` with::
 
@@ -29,4 +29,3 @@ if you have cloned from github. If you don't have root access, append
 ``--user`` to the above commands to get a local install.
 
 * Free software: BSD license
-
