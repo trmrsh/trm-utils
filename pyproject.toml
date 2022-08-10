@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0", "astropy", "numpy", "scipy"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trm.utils"
+version = "1.0.0"
+authors = [
+  { name="Tom Marsh", email="t.r.marsh@warwick.ac.uk" },
+]
+description = "Python utility classes and functions"
+readme = "README.rst"
+license = { file="LICENSE.txt" }
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+]
+
+[project.urls]
+"Homepage" = "hhttps://github.com/trmrsh/trm-utils"
+"Bug Tracker" = "https://github.com/trmrsh/trm-utils/issues"
