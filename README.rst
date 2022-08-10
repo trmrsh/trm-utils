@@ -1,16 +1,32 @@
-utility classes
-===============
+trm.utils
+=========
 
-This package bundles up often useful stuff which has no other clear
-home. It has a sub-package to handle 3D vectors (vec3) and a few useful
-functions, e.g. for measuring the positions of peaks in 1D arrays, and
-fitting splines with rejection.
+``trm.utils`` is a home for a few odds and ends that don't on their
+own justify their own package but are quite often useful. For instance
+``trm.utils.vec3`` is a sub-module that handles 3D Cartesian vectors,
+while ``trm.utils.splfit`` is a method based on scipy routines that
+carries out the commonly needed task of spline fitting with rejection
+of bad data.
 
-Usual installation:
 
-   pip install .
+Installation
+------------
 
-Add "--user" for a local install.
+``trm.utils`` makes use of numpy, scipy and astropy, and requires
+Python 3.6+. One routine ``mpl_style_axes`` only makes sense for
+matplotlib plots but if you don't use it, you don't need matplotlib
+to be installed.
 
-Tom Marsh
+Install ``trm.utils`` with::
+
+ pip install trm.utils
+
+to get via PyPI, or::
+
+ pip install .
+
+if you have cloned from github. If you don't have root access, append
+``--user`` to the above commands to get a local install.
+
+* Free software: BSD license
 
