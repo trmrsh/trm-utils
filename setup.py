@@ -19,7 +19,7 @@ setup(
 #    long_description=readme + '\n\n' + history,
     long_description=readme,
     long_description_content_type='text/xrst',
-    url='https://github.com/trmrsh/trmutils',
+    url='https://github.com/trmrsh/trm-utils',
 
     # Choose your license
     license='BSD',
